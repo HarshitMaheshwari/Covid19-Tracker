@@ -6,6 +6,7 @@ import {
   Select,
 } from '@material-ui/core';
 import Infobox from './InfoBox';
+import Map from './Map';
 
 
 function App() {
@@ -77,6 +78,7 @@ function App() {
       {/* graph */}
 
       {/* map */}
+      <Map />
     </div>
   );
 }
