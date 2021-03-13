@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import {
   MenuItem,
@@ -8,9 +8,26 @@ import {
 
 
 function App() {
-  const [countries, setCountries] = useState([
-    'USA', 'UK', 'INDIA'
-  ]);
+  const [countries, setCountries] = useState(['USA', 'UK', 'INDIA']);
+
+  useEffect(() => {
+
+    const getCountriesData = async() => {
+      await fetch('https://disease.sh/v3/covid-19/countries').then((response) => response.json()).then((data) => {
+        const countries = data.map((country) => (
+          {
+            name: country.country,
+            value: country.countryInfo.iso2
+
+          }));
+          setCountries(countries);
+
+      });
+    };
+    getCountriesData();
+  }, []);
+
+
   return (
     <div className="app">
       <div className='app_header'>
@@ -21,16 +38,10 @@ function App() {
           value='abc' 
         >
           {countries.map(country=>(
-            <MenuItem value={country}>{country}</MenuItem>
+            <MenuItem value={country.value}>{country.name}</MenuItem>
 
           ))}
-
-          {/* <MenuItem value='worldwide'>Worldwide</MenuItem>
-          <MenuItem value='worldwide'>OPtion two</MenuItem>
-          <MenuItem value='worldwide'>Option 3</MenuItem>
-          <MenuItem value='worldwide'>Option 4</MenuItem> */}
-
-
+          
         </Select>
 
       </FormControl>
