@@ -5,10 +5,12 @@ import {
   FormControl,
   Select,
 } from '@material-ui/core';
+import Infobox from './InfoBox';
 
 
 function App() {
-  const [countries, setCountries] = useState(['USA', 'UK', 'INDIA']);
+  const [countries, setCountries] = useState([]);
+  const [country, setCountry] = useState(['worldwide'])
 
   useEffect(() => {
 
@@ -27,6 +29,12 @@ function App() {
     getCountriesData();
   }, []);
 
+  const onCountryChange = (event) => {
+    const countryCode = event.target.value;
+
+    setCountry(countryCode);
+  } 
+
 
   return (
     <div className="app">
@@ -35,18 +43,28 @@ function App() {
       <FormControl className='app_dropdown'>
         <Select
           variant='outlined'
-          value='abc' 
+          onChange={onCountryChange}
+          value={country} 
         >
+          <MenuItem value='worldwide'>Worldwide</MenuItem>
           {countries.map(country=>(
             <MenuItem value={country.value}>{country.name}</MenuItem>
 
           ))}
-          
+
         </Select>
 
       </FormControl>
       </div> 
       
+
+      <div className='app_stats'>
+        <Infobox title='Coronavirus Cases' cases ={1234} total={3000}></Infobox>
+        <Infobox title='Recovered' cases ={123} total={2000}></Infobox>
+        <Infobox title='Deaths' cases ={12323} total={2000}></Infobox>
+
+
+      </div>
 
       {/* header */}
       {/* title + select input dropdown */}
