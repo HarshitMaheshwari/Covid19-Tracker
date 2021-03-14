@@ -10,8 +10,9 @@ import Map from './Map';
 import { Card, CardContent } from '@material-ui/core';
 import Table from './Table';
 import LineGraph from './LineGraph';
-import { SortData } from './util';
+import { SortData, prettyPrintStat } from './util';
 import 'leaflet/dist/leaflet.css';
+import numeral from 'numeral';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
   const [countryInfo, setCountryInfo] = useState({});
   const [tableData, setTableData] = useState([]); 
   const [mapCenter, setMapCenter] = useState({ lat: 34, lng: -40});
+  const [casesType, setCasesType] = useState("cases");
   const [mapZoom, setMapZoom] = useState(3);
   const [mapCountries, setMapCountries] = useState([]); 
 
@@ -57,7 +59,7 @@ function App() {
       setCountry(countryCode);
       setCountryInfo(data);
       setMapCenter([data.countryInfo.lat, data.countryInfo.lng]);
-      setMapZoom(4);
+      setMapZoom(2);
 
     });
   };
@@ -88,27 +90,36 @@ function App() {
 
 
         <div className='app_stats'>
-          <Infobox title='Coronavirus Cases' cases={countryInfo.todayCases} total={countryInfo.todayCases}></Infobox>
-          <Infobox title='Recovered' cases={countryInfo.todayRecovered} total={countryInfo.todayRecovered}></Infobox>
-          <Infobox title='Deaths' cases={countryInfo.todayDeaths} total={countryInfo.todayDeaths}></Infobox>
-
-
+          <Infobox
+              onClick={(e) => setCasesType("cases")}
+              title="Coronavirus Cases"
+              isRed
+              active={casesType === "cases"}
+              cases={prettyPrintStat(countryInfo.todayCases)}
+              total={numeral(countryInfo.cases).format("0.0a")}
+            />
+            <Infobox
+              onClick={(e) => setCasesType("recovered")}
+              title="Recovered"
+              active={casesType === "recovered"}
+              cases={prettyPrintStat(countryInfo.todayRecovered)}
+              total={numeral(countryInfo.recovered).format("0.0a")}
+            />
+            <Infobox
+              onClick={(e) => setCasesType("deaths")}
+              title="Deaths"
+              isRed
+              active={casesType === "deaths"}
+              cases={prettyPrintStat(countryInfo.todayDeaths)}
+              total={numeral(countryInfo.deaths).format("0.0a")}
+            />
         </div>
 
-        {/* header */}
-        {/* title + select input dropdown */}
-
-        {/* infoboxes */}
-        {/* infoboxes */}
-        {/* infoboxes */}
-
-
-
-        {/* map */}
-        <Map 
-        countries = {mapCountries}
-        center = {mapCenter}
-        zoom = {mapZoom}
+        <Map
+          casesType={casesType} 
+          countries = {mapCountries}
+          center = {mapCenter}
+          zoom = {mapZoom}
         />
 
       </div>
