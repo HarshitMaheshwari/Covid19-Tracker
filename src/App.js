@@ -9,6 +9,7 @@ import Infobox from './InfoBox';
 import Map from './Map';
 import { Card, CardContent } from '@material-ui/core';
 import Table from './Table';
+import LineGraph from './LineGraph';
 import { SortData } from './util';
 
 
@@ -107,6 +108,7 @@ function App() {
 
 
           <h3> World wide new cases</h3>
+          <LineGraph/>
         </CardContent>
         {/* table */}
         {/* graph */}
